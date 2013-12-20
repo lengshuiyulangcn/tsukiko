@@ -20,8 +20,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+require "tsukiko"
 
+str=Tsukiko.new
+
+1.9.3-p448 :012 > a.convert("2001年新年钟声即将敲响")
+ => "2001年新年鐘聲即將敲響" 
+1.9.3-p448 :013 > a.convert("占卜，萝卜，国家")
+ => "佔卜，蘿蔔，國家" 
 ## Contributing
 
 1. Fork it
