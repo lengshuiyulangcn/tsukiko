@@ -1,6 +1,8 @@
 # Tsukiko
 
-TODO: Write a gem description
+Now it can convert Simplified Chinese into Traditional Chinsese with a high accuracy
+
+I will add the opposite converation soon.
 
 ## Installation
 
