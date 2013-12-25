@@ -3,18 +3,46 @@
 #encoding:utf-8
 class Tsukiko
 	def initialize(dic_path=File.dirname(__FILE__))
-		@words=Hash.new
-		@han=Hash.new
-		@bigram=Hash.new
 		@words=Marshal.load(File.open(dic_path+"/../data/words.data","rb").read)
 		@han=Marshal.load(File.open(dic_path+"/../data/cn_tw.data","rb").read)
 		@bigram=Marshal.load(File.open(dic_path+"/../data/bigram.data","rb").read)
+		@trhan=Marshal.load(File.open(dic_path+"/../data/tw_cn.data","rb").read)
 	end
-	def convert_words(str)
+def convert_words(str)
 		@words.each{|cn,tw|
-			str.gsub!(cn,"   "+tw+"   ")
+			str.gsub!(cn,"   #%"+tw+"%#   ")
 		}
 		@result=str
+	end
+	def convert_words_tw(str)
+		words=@words.invert
+		words.each{|tw,cn|
+			str.gsub!(tw,"   "+cn+"   ")
+		}
+		@result=str
+	end
+	def convert_han_tw(str)
+		# puts str
+		tmpstr=str.clone
+		while tmpstr.sub!(/[\u4e00-\u9fa5]+/,"")
+		# matches=str.match(/(\S+)/)
+	 			tmp=$&.chomp
+	 			# puts tmp
+	 			# puts @trhan["卜"]
+	 			 tmpp=tmp.clone
+				for i in 0..tmp.length-1
+					# puts @trhan[tmp[i]]
+					if @trhan[tmp[i]]==0
+						tmpp[i]=tmp[i]
+						next
+					else
+						tmpp[i]=@trhan[tmp[i]]
+					#convert each character
+					end
+				end
+				 @result=str.gsub!(tmp,tmpp)
+		end
+		@result
 	end
 	# call after convert_words
 	def convert_han(str)
@@ -22,20 +50,26 @@ class Tsukiko
 		while tmpstr.sub!(/\S+/,"")
 		# matches=str.match(/(\S+)/)
 	 			tmp=$&.chomp
+	 			if tmp[0..1]=="#%"
+	 				next
+	 			else
 	 			# puts tmp
-	 			tmpp=tmp.clone
-				for i in 0..tmp.length-1
+	 				tmpp=tmp.clone
+					for i in 0..tmp.length-1
 					#convert each character
-					if @han[tmp[i]]==1
-						tmpp[i]=@han[tmp[i]][0]
-					elsif @han[tmp[i]]==nil
+						if @han[tmp[i]]==1
+							tmpp[i]=@han[tmp[i]][0]
+						elsif @han[tmp[i]]==nil
+							
+						# break
 						tmpp[i]=tmp[i]	
-					else
-						tmpp[i]=use_bigram(tmpp,i)
+						else
+							tmpp[i]=use_bigram(tmpp,i)
+						end
 					end
-				end
 				 @result=str.gsub!(tmp,tmpp)
-		end
+				end
+	end
 		@result
 	end
 	# when there is a 1:n converation
@@ -66,9 +100,16 @@ class Tsukiko
 		# puts @bigram[str]
 		return @bigram[str]
 	end
-
+# convert simplified chinesse into tradtional chinese
 	def convert(str)
 		@result=convert_han(convert_words(str))
+		# @result=convert_words(str)
+		@result.gsub!("   #%","")
+		@result.gsub!("%#   ","")
+		@result
+	end
+	def convert_tw(str)
+		@result=convert_han_tw(convert_words_tw(str))
 		# @result=convert_words(str)
 		@result.gsub!("   ","")
 		@result

@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{a tool to convert simplified Chinsese into tradtional Chinese}
   gem.homepage      = ""
 
-  gem.files         = ["lib/tsukiko.rb","data/bigram.data","data/cn_tw.data","data/words.data"]
+  gem.files         = ["lib/tsukiko.rb","data/bigram.data","data/cn_tw.data","data/words.data","data/tw_cn.data"]
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib","data"]
