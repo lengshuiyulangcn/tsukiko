@@ -1,8 +1,6 @@
 # Tsukiko
 
-Now it can convert Simplified Chinese into Traditional Chinsese with a high accuracy
-
-I will add the opposite converation soon.
+a tool to convert bewteen simpifid Chinese and traditional Chinese
 
 ## Installation
 
@@ -22,12 +20,21 @@ Or install it yourself as:
 
 require "tsukiko"
 
-str=Tsukiko.new
+a=Tsukiko.new
 
-1.9.3-p448 :012 > a.convert("2001年新年钟声即将敲响")
- => "2001年新年鐘聲即將敲響" 
-1.9.3-p448 :013 > a.convert("占卜，萝卜，国家")
- => "佔卜，蘿蔔，國家" 
+to convert sp into tr
+
+irb(main):003:0> a.convert("萝卜青菜各有所爱，我们尝试比较长的文章")
+
+=> "蘿蔔青菜各有所愛，我們嘗試比較長的文章"
+
+to convert tr into sp
+
+irb(main):005:0> a.convert_tw("蘿蔔胡蘿蔔香蕉鳳梨")
+
+=> "萝卜胡萝卜香蕉菠萝"
+
+
 ## Contributing
 
 1. Fork it
